@@ -1,6 +1,6 @@
 import streamlit as st
 
-from course import load_course
+from course import load_course, page_for, progress_query
 
 lessons = load_course()
 total_minutes = sum(lesson.minutes for lesson in lessons)
@@ -28,28 +28,31 @@ with left:
         habits. The lessons are short enough to complete with a query editor open beside them.
         """
     )
-    st.link_button(
-        "Start the course →", lessons[0].route, type="primary", width="stretch"
+    st.page_link(
+        page_for(lessons[0]),
+        label="Start the course →",
+        icon=":material/arrow_forward:",
+        width="stretch",
+        query_params=progress_query(lessons),
     )
 
-with right:
-    with st.container(border=True):
-        st.markdown("#### :material/database: The core idea")
-        st.markdown("SQL lets you describe **the result you want**. The database figures out how to retrieve it.")
-        st.code("SELECT name, city\nFROM customers;", language="sql")
+with right, st.container(border=True):
+    st.markdown("#### :material/database: The core idea")
+    st.markdown(
+        "SQL lets you describe **the result you want**. "
+        "The database figures out how to retrieve it."
+    )
+    st.code("SELECT name, city\nFROM customers;", language="sql")
 
 st.space("medium")
 st.markdown("### How the course works")
 a, b, c = st.columns(3)
-with a:
-    with st.container(border=True):
-        st.markdown("#### 1 · Learn")
-        st.caption("Meet one idea at a time in plain language.")
-with b:
-    with st.container(border=True):
-        st.markdown("#### 2 · Try")
-        st.caption("Run each example in your own SQLite query editor.")
-with c:
-    with st.container(border=True):
-        st.markdown("#### 3 · Progress")
-        st.caption("Mark lessons complete as you build confidence.")
+with a, st.container(border=True):
+    st.markdown("#### 1 · Learn")
+    st.caption("Meet one idea at a time in plain language.")
+with b, st.container(border=True):
+    st.markdown("#### 2 · Try")
+    st.caption("Run examples in the built-in SQLite practice area.")
+with c, st.container(border=True):
+    st.markdown("#### 3 · Progress")
+    st.caption("Mark lessons complete as you build confidence.")

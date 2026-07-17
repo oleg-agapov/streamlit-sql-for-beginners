@@ -1,0 +1,24 @@
+[project]
+name = "streamlit-sql-for-beginners"
+version = "0.1.0"
+description = "A beginner-friendly, hands-on SQL course built with Streamlit"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit==1.52.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.12.3",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

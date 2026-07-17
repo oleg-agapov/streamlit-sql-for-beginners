@@ -1,16 +1,19 @@
 import streamlit as st
 
-st.title("Course map")
-st.markdown("The first chapter is ready. Later chapters show the intended direction of the course.")
+from course import load_course, module_name
 
-for title, status, lessons in [
-    ("1 · Foundations", "Available", "SELECT · WHERE · ORDER BY"),
-    ("2 · Summarizing data", "Planned", "COUNT · SUM · GROUP BY"),
-    ("3 · Combining tables", "Planned", "Keys · INNER JOIN · LEFT JOIN"),
-    ("4 · Practical SQL", "Planned", "CASE · Dates · A small analysis project"),
-]:
+st.title("Course map")
+st.markdown("Follow the levels in order, or jump directly to the topic you need.")
+
+modules = {}
+for lesson in load_course():
+    modules.setdefault(lesson.module, []).append(lesson)
+
+for module, lessons in modules.items():
+    complete = sum(bool(st.session_state.get(lesson.key)) for lesson in lessons)
     with st.container(border=True):
-        left, right = st.columns([4, 1])
-        left.markdown(f"#### {title}")
-        left.caption(lessons)
-        right.markdown(f"`{status}`")
+        left, right = st.columns([5, 1])
+        left.markdown(f"#### {module_name(module)}")
+        left.caption(" · ".join(lesson.title for lesson in lessons))
+        right.metric("Progress", f"{complete}/{len(lessons)}")
+        st.progress(complete / len(lessons))

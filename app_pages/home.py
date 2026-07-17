@@ -1,5 +1,10 @@
 import streamlit as st
 
+from course import load_course
+
+lessons = load_course()
+total_minutes = sum(lesson.minutes for lesson in lessons)
+
 st.caption("A FREE, HANDS-ON COURSE")
 st.title("Learn SQL from scratch")
 st.markdown(
@@ -8,9 +13,9 @@ st.markdown(
 
 st.space("small")
 col1, col2, col3 = st.columns(3)
-col1.metric("Level", "Beginner", help="No SQL experience required")
-col2.metric("Available now", "2 lessons")
-col3.metric("Format", "Learn + practice")
+col1.metric("Levels", "5", help="Plus a short getting-started module")
+col2.metric("Lessons", str(len(lessons)))
+col3.metric("Study time", f"~{total_minutes // 60} hours")
 
 st.space("medium")
 left, right = st.columns([3, 2], gap="large")
@@ -18,12 +23,14 @@ with left:
     st.markdown("### What you’ll learn")
     st.markdown(
         """
-        Start with the vocabulary of tables, rows, and columns. Then write queries that select,
-        filter, sort, summarize, and combine data. Every lesson pairs a short explanation with
-        examples and a low-stakes exercise.
+        Start with tables, rows, and columns. Then learn to filter, summarize, and combine data;
+        use window functions; design database structures; and develop practical optimization
+        habits. The lessons are short enough to complete with a query editor open beside them.
         """
     )
-    st.page_link("app_pages/lesson_select.py", label="Start lesson 1", icon=":material/arrow_forward:")
+    st.link_button(
+        "Start the course →", lessons[0].route, type="primary", width="stretch"
+    )
 
 with right:
     with st.container(border=True):
@@ -41,7 +48,7 @@ with a:
 with b:
     with st.container(border=True):
         st.markdown("#### 2 · Try")
-        st.caption("Change a query and see its result immediately.")
+        st.caption("Run each example in your own SQLite query editor.")
 with c:
     with st.container(border=True):
         st.markdown("#### 3 · Progress")

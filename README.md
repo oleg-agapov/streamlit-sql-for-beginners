@@ -11,5 +11,7 @@ pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
 
-The baseline includes grouped sidebar navigation, a course overview, two mock lessons,
-interactive exercises, and per-session lesson completion state.
+The app loads 42 short Markdown lessons from `app_pages/lessons/` and builds grouped sidebar
+navigation for all six modules. Lessons are grouped into module folders and rendered through one
+shared callable page component, while retaining stable routes, previous/next navigation, and
+per-session completion state.
